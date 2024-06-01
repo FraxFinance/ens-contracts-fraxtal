@@ -85,6 +85,13 @@ const config: HardhatUserConfig = {
       chainId: 1,
       accounts: real_accounts,
     },
+    fraxtal: {
+      url: `https://rpc.frax.com/`,
+      saveDeployments: false,
+      tags: ['test', 'use_root'],
+      chainId: 252,
+      accounts: real_accounts,
+    },
   },
   mocha: {},
   solidity: {
@@ -133,7 +140,7 @@ const config: HardhatUserConfig = {
     },
     owner: {
       default: 1,
-      1: '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
+      1: '0x93bC2E4061D4B256EB55446952B49C616db4ac0e',
     },
   },
   external: {

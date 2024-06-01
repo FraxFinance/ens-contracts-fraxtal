@@ -3,14 +3,17 @@ const sha3 = require('web3-utils').sha3
 
 const { exceptions } = require('../test-utils')
 
-let contracts = [[artifacts.require('./registry/ENSRegistry.sol'), 'Solidity']]
+let contracts = [[artifacts.require('./registry/FNSRegistry.sol'), 'Solidity']]
+
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
 
 contracts.forEach(function ([ENS, lang]) {
   contract('ENS ' + lang, function (accounts) {
     let ens
 
     beforeEach(async () => {
-      ens = await ENS.new()
+      ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
     })
 
     it('should allow ownership transfers', async () => {
@@ -82,11 +85,11 @@ contracts.forEach(function ([ENS, lang]) {
     })
 
     it('should allow the creation of subnodes', async () => {
-      let result = await ens.setSubnodeOwner('0x0', sha3('eth'), accounts[1], {
+      let result = await ens.setSubnodeOwner('0x0', sha3('frax'), accounts[1], {
         from: accounts[0],
       })
 
-      assert.equal(await ens.owner(namehash.hash('eth')), accounts[1])
+      assert.equal(await ens.owner(namehash.hash('frax')), accounts[1])
 
       assert.equal(result.logs.length, 1)
       let args = result.logs[0].args
@@ -94,13 +97,13 @@ contracts.forEach(function ([ENS, lang]) {
         args.node,
         '0x0000000000000000000000000000000000000000000000000000000000000000',
       )
-      assert.equal(args.label, sha3('eth'))
+      assert.equal(args.label, sha3('frax'))
       assert.equal(args.owner, accounts[1])
     })
 
     it('should prohibit subnode creation by non-owners', async () => {
       await exceptions.expectFailure(
-        ens.setSubnodeOwner('0x0', sha3('eth'), accounts[1], {
+        ens.setSubnodeOwner('0x0', sha3('frax'), accounts[1], {
           from: accounts[1],
         }),
       )
