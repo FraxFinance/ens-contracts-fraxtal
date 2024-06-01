@@ -2,7 +2,7 @@ const namehash = require('eth-ens-namehash')
 const sha3 = require('web3-utils').sha3
 const PublicResolver = artifacts.require('./resolvers/PublicResolver.sol')
 const ReverseRegistrar = artifacts.require('./registry/ReverseRegistrar.sol')
-const ENS = artifacts.require('./registry/ENSRegistry.sol')
+const ENS = artifacts.require('./registry/FNSRegistry.sol')
 const NameWrapper = artifacts.require('DummyNameWrapper.sol')
 const { ethers } = require('hardhat')
 const {
@@ -11,6 +11,9 @@ const {
 } = require('../test-utils')
 
 const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
 
 function assertReverseClaimedEventEmitted(tx, addr, node) {
   assert.equal(tx.logs.length, 1)
@@ -28,7 +31,7 @@ contract('ReverseRegistrar', function (accounts) {
     node = getReverseNode(accounts[0])
     node2 = getReverseNode(accounts[1])
     node3 = getReverseNode(accounts[2])
-    ens = await ENS.new()
+    ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
     nameWrapper = await NameWrapper.new()
 
     registrar = await ReverseRegistrar.new(ens.address)

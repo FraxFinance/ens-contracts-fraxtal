@@ -1,4 +1,4 @@
-const ENS = artifacts.require('./registry/ENSRegistry.sol')
+const ENS = artifacts.require('./registry/FNSRegistry.sol')
 const PublicResolver = artifacts.require('PublicResolver.sol')
 const NameWrapper = artifacts.require('DummyNameWrapper.sol')
 const { deploy } = require('../test-utils/contracts')
@@ -14,6 +14,9 @@ const sha3 = require('web3-utils').sha3
 
 const { exceptions } = require('../test-utils')
 
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
+
 contract('PublicResolver', function (accounts) {
   let node
   let ens, resolver, nameWrapper
@@ -25,7 +28,7 @@ contract('PublicResolver', function (accounts) {
     signers = await ethers.getSigners()
     account = await signers[0].getAddress()
     node = namehash.hash('eth')
-    ens = await ENS.new()
+    ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
     nameWrapper = await NameWrapper.new()
 
     //setup reverse registrar
