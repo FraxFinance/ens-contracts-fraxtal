@@ -1,6 +1,6 @@
 const ENS = artifacts.require('./registry/FNSRegistry')
 const PublicResolver = artifacts.require('./resolvers/PublicResolver')
-const BaseRegistrar = artifacts.require('./BaseRegistrarImplementation')
+const BaseRegistrar = artifacts.require('./FNSBaseRegistrarImplementation')
 const ETHRegistrarController = artifacts.require('./ETHRegistrarController')
 const DummyOracle = artifacts.require('./DummyOracle')
 const StablePriceOracle = artifacts.require('./StablePriceOracle')
@@ -38,9 +38,15 @@ contract('BulkRenewal', function (accounts) {
     // Create a registry
     ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
     // Create a base registrar
-    baseRegistrar = await BaseRegistrar.new(ens.address, namehash.hash('eth'), {
-      from: ownerAccount,
-    })
+    baseRegistrar = await BaseRegistrar.new(
+      ens.address,
+      namehash.hash('eth'),
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
+      {
+        from: ownerAccount,
+      },
+    )
 
     // Setup reverseRegistrar
     reverseRegistrar = await deploy('ReverseRegistrar', ens.address)

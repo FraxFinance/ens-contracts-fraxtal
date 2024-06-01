@@ -4,7 +4,7 @@ const sha3 = require('web3-utils').sha3
 const toBN = require('web3-utils').toBN
 
 const ENS = artifacts.require('./registry/FNSRegistry')
-const BaseRegistrar = artifacts.require('./BaseRegistrarImplementation')
+const BaseRegistrar = artifacts.require('./FNSBaseRegistrarImplementation')
 const DummyOracle = artifacts.require('./DummyOracle')
 const ExponentialPremiumPriceOracle = artifacts.require(
   './ExponentialPremiumPriceOracle',
@@ -27,7 +27,12 @@ contract('ExponentialPricePremiumOracle', function (accounts) {
 
   before(async () => {
     ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
-    registrar = await BaseRegistrar.new(ens.address, namehash.hash('eth'))
+    registrar = await BaseRegistrar.new(
+      ens.address,
+      namehash.hash('eth'),
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
+    )
     await ens.setSubnodeOwner('0x0', sha3('eth'), registrar.address)
     await registrar.addController(accounts[0])
 

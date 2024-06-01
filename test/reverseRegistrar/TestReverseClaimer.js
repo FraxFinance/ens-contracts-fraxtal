@@ -27,9 +27,11 @@ describe('ReverseClaimer', () => {
 
     EnsRegistry = await deploy('ENSRegistry')
     BaseRegistrar = await deploy(
-      'BaseRegistrarImplementation',
+      'FNSBaseRegistrarImplementation',
       EnsRegistry.address,
       namehash('eth'),
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
     )
 
     await BaseRegistrar.addController(account)

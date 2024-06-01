@@ -91,9 +91,11 @@ describe('Name Wrapper', () => {
     EnsRegistryH = EnsRegistry.connect(signers[2])
 
     BaseRegistrar = await deploy(
-      'BaseRegistrarImplementation',
+      'FNSBaseRegistrarImplementation',
       EnsRegistry.address,
       namehash('eth'),
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
     )
 
     BaseRegistrar2 = BaseRegistrar.connect(signers[1])

@@ -18,6 +18,8 @@ const {
   EMPTY_ADDRESS: ZERO_ADDRESS,
 } = require('../test-utils/constants')
 
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
 const DAY = 24 * 60 * 60
 const REGISTRATION_TIME = 28 * DAY
 const BUFFERED_REGISTRATION_COST = REGISTRATION_TIME + 3 * DAY
@@ -86,9 +88,11 @@ contract('ETHRegistrarController', function () {
     ens = await deploy('ENSRegistry')
 
     baseRegistrar = await deploy(
-      'BaseRegistrarImplementation',
+      'FNSBaseRegistrarImplementation',
       ens.address,
       namehash('eth'),
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
     )
 
     reverseRegistrar = await deploy('ReverseRegistrar', ens.address)
