@@ -13,11 +13,6 @@ pragma solidity ^0.8.4;
 // ====================================================================
 // Frax Finance: https://github.com/FraxFinance
 
-// Primary Author(s)
-// Amirnader Aghayeghazvini: https://github.com/amirnader-ghazvini
-
-// Reviewer(s) / Contributor(s)
-
 import {ENSRegistry} from "./ENSRegistry.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
