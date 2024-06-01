@@ -1,4 +1,4 @@
-const ENS = artifacts.require('./registry/ENSRegistry')
+const ENS = artifacts.require('./registry/FNSRegistry')
 const BaseRegistrar = artifacts.require(
   './registrar/BaseRegistrarImplementation',
 )
@@ -13,6 +13,9 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 const ZERO_HASH =
   '0x0000000000000000000000000000000000000000000000000000000000000000'
 
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
+
 contract('BaseRegistrar', function (accounts) {
   const ownerAccount = accounts[0]
   const controllerAccount = accounts[1]
@@ -23,7 +26,7 @@ contract('BaseRegistrar', function (accounts) {
   let registrar
 
   before(async () => {
-    ens = await ENS.new()
+    ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
 
     registrar = await BaseRegistrar.new(ens.address, namehash.hash('eth'), {
       from: ownerAccount,

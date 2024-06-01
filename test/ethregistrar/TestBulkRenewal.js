@@ -1,4 +1,4 @@
-const ENS = artifacts.require('./registry/ENSRegistry')
+const ENS = artifacts.require('./registry/FNSRegistry')
 const PublicResolver = artifacts.require('./resolvers/PublicResolver')
 const BaseRegistrar = artifacts.require('./BaseRegistrarImplementation')
 const ETHRegistrarController = artifacts.require('./ETHRegistrarController')
@@ -17,6 +17,9 @@ const { exceptions } = require('../test-utils')
 const ETH_LABEL = sha3('eth')
 const ETH_NAMEHASH = namehash.hash('eth')
 
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
+
 contract('BulkRenewal', function (accounts) {
   let ens
   let resolver
@@ -33,7 +36,7 @@ contract('BulkRenewal', function (accounts) {
 
   before(async () => {
     // Create a registry
-    ens = await ENS.new()
+    ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
     // Create a base registrar
     baseRegistrar = await BaseRegistrar.new(ens.address, namehash.hash('eth'), {
       from: ownerAccount,
