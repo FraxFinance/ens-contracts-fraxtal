@@ -13,6 +13,9 @@ const DAY = 86400
 
 const { CANNOT_UNWRAP, CAN_DO_EVERYTHING } = FUSES
 
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
+
 describe('TestUnwrap', () => {
   let EnsRegistry
   let BaseRegistrar
