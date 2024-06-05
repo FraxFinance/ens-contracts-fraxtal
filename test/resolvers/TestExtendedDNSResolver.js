@@ -8,6 +8,8 @@ function hexEncodeName(name) {
 }
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+const FRAXTAL_DEL_REG = '0x098c837FeF2e146e96ceAF58A10F68Fc6326DC4C'
+const FRAXTAL_INITIAL_DEL = '0x93bC2E4061D4B256EB55446952B49C616db4ac0e'
 
 contract('ExtendedDNSResolver', function (accounts) {
   var resolver = null
@@ -15,7 +17,11 @@ contract('ExtendedDNSResolver', function (accounts) {
 
   beforeEach(async function () {
     resolver = await ExtendedDNSResolver.new()
-    PublicResolver = await ethers.getContractFactory('PublicResolver')
+    PublicResolver = await ethers.getContractFactory(
+      'FNSPublicResolver',
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
+    )
   })
 
   async function resolve(name, method, args, context) {

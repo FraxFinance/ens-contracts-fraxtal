@@ -1,5 +1,5 @@
 const ENS = artifacts.require('./registry/FNSRegistry.sol')
-const PublicResolver = artifacts.require('PublicResolver.sol')
+const FNSPublicResolver = artifacts.require('FNSPublicResolver.sol')
 const NameWrapper = artifacts.require('DummyNameWrapper.sol')
 const { deploy } = require('../test-utils/contracts')
 const { labelhash } = require('../test-utils/ens')
@@ -27,13 +27,18 @@ contract('PublicResolver', function (accounts) {
   beforeEach(async () => {
     signers = await ethers.getSigners()
     account = await signers[0].getAddress()
-    node = namehash.hash('eth')
+    node = namehash.hash('frax')
     ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
     nameWrapper = await NameWrapper.new()
 
     //setup reverse registrar
 
-    const ReverseRegistrar = await deploy('ReverseRegistrar', ens.address)
+    const ReverseRegistrar = await deploy(
+      'FNSReverseRegistrar',
+      ens.address,
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
+    )
 
     await ens.setSubnodeOwner(ROOT_NODE, labelhash('reverse'), account)
     await ens.setSubnodeOwner(
@@ -42,16 +47,18 @@ contract('PublicResolver', function (accounts) {
       ReverseRegistrar.address,
     )
 
-    resolver = await PublicResolver.new(
+    resolver = await FNSPublicResolver.new(
       ens.address,
       nameWrapper.address,
       accounts[9], // trusted contract
       ReverseRegistrar.address, //ReverseRegistrar.address,
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
     )
 
     await ReverseRegistrar.setDefaultResolver(resolver.address)
 
-    await ens.setSubnodeOwner('0x0', sha3('eth'), accounts[0], {
+    await ens.setSubnodeOwner('0x0', sha3('frax'), accounts[0], {
       from: accounts[0],
     })
   })
@@ -389,7 +396,9 @@ contract('PublicResolver', function (accounts) {
 
   describe('name', async () => {
     const basicSetName = async () => {
+      console.log('hello')
       await resolver.setName(node, 'name1', { from: accounts[0] })
+      console.log('hello2')
       assert.equal(await resolver.name(node), 'name1')
     }
 

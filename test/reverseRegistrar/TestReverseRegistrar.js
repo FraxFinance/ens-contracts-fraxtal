@@ -1,7 +1,9 @@
 const namehash = require('eth-ens-namehash')
 const sha3 = require('web3-utils').sha3
 const PublicResolver = artifacts.require('./resolvers/PublicResolver.sol')
-const ReverseRegistrar = artifacts.require('./registry/ReverseRegistrar.sol')
+const FNSReverseRegistrar = artifacts.require(
+  './registry/FNSReverseRegistrar.sol',
+)
 const ENS = artifacts.require('./registry/FNSRegistry.sol')
 const NameWrapper = artifacts.require('DummyNameWrapper.sol')
 const { ethers } = require('hardhat')
@@ -34,7 +36,11 @@ contract('ReverseRegistrar', function (accounts) {
     ens = await ENS.new(FRAXTAL_DEL_REG, FRAXTAL_INITIAL_DEL)
     nameWrapper = await NameWrapper.new()
 
-    registrar = await ReverseRegistrar.new(ens.address)
+    registrar = await FNSReverseRegistrar.new(
+      ens.address,
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
+    )
     await ens.setSubnodeOwner('0x0', sha3('reverse'), accounts[0], {
       from: accounts[0],
     })
@@ -56,7 +62,11 @@ contract('ReverseRegistrar', function (accounts) {
       PublicResolver.abi,
       ethers.provider,
     )
-    dummyOwnable = await ReverseRegistrar.new(ens.address)
+    dummyOwnable = await FNSReverseRegistrar.new(
+      ens.address,
+      FRAXTAL_DEL_REG,
+      FRAXTAL_INITIAL_DEL,
+    )
     dummyOwnableReverseNode = getReverseNode(dummyOwnable.address)
   })
 
