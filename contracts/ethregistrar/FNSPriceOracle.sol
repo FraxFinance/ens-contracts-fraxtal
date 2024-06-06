@@ -20,16 +20,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 // FNSPriceOracle sets a price in unit of FXS.
-contract FNSPriceOracle is IPriceOracle {
+contract FNSPriceOracle is Ownable, IPriceOracle {
     using StringUtils for *;
     using SafeMath for *;
 
     // Rent in base price units by length
-    uint256 public immutable price1Letter;
-    uint256 public immutable price2Letter;
-    uint256 public immutable price3Letter;
-    uint256 public immutable price4Letter;
-    uint256 public immutable price5Letter;
+    uint256 public price1Letter;
+    uint256 public price2Letter;
+    uint256 public price3Letter;
+    uint256 public price4Letter;
+    uint256 public price5Letter;
 
     uint256 immutable GRACE_PERIOD = 90 days;
 
@@ -57,6 +57,18 @@ contract FNSPriceOracle is IPriceOracle {
         price3Letter = _rentPrices[2];
         price4Letter = _rentPrices[3];
         price5Letter = _rentPrices[4];
+
+        emit RentPriceChanged(_rentPrices);
+    }
+
+    function setPrices(uint[] memory _rentPrices) public onlyOwner {
+        price1Letter = _rentPrices[0];
+        price2Letter = _rentPrices[1];
+        price3Letter = _rentPrices[2];
+        price4Letter = _rentPrices[3];
+        price5Letter = _rentPrices[4];
+
+        emit RentPriceChanged(_rentPrices);
     }
 
     function price(

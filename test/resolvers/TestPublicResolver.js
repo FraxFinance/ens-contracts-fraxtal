@@ -396,9 +396,7 @@ contract('PublicResolver', function (accounts) {
 
   describe('name', async () => {
     const basicSetName = async () => {
-      console.log('hello')
       await resolver.setName(node, 'name1', { from: accounts[0] })
-      console.log('hello2')
       assert.equal(await resolver.name(node), 'name1')
     }
 

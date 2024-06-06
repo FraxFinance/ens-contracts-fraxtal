@@ -25,7 +25,6 @@ contract FNSPublicResolver is PublicResolver {
         ERC20(0xFc00000000000000000000000000000000000002);
     ERC20 public constant FRAX =
         ERC20(0xFc00000000000000000000000000000000000001);
-    string public constant name = "FNS Public Resolver";
 
     constructor(
         ENS _ens,
