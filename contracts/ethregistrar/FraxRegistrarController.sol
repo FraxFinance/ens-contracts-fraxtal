@@ -174,9 +174,6 @@ contract FraxRegistrarController is
         uint16 ownerControlledFuses
     ) public override {
         IPriceOracle.Price memory price = rentPrice(name, duration);
-        if (payToken.balanceOf(msg.sender) < (price.base + price.premium)) {
-            revert InsufficientBalance();
-        }
 
         _consumeCommitment(
             name,
@@ -229,9 +226,7 @@ contract FraxRegistrarController is
         bytes32 labelhash = keccak256(bytes(name));
         uint256 tokenId = uint256(labelhash);
         IPriceOracle.Price memory price = rentPrice(name, duration);
-        if (payToken.balanceOf(msg.sender) < price.base) {
-            revert InsufficientBalance();
-        }
+
         uint256 expires = nameWrapper.renew(tokenId, duration);
 
         payToken.transferFrom(msg.sender, address(this), price.base);
