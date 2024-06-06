@@ -238,7 +238,7 @@ contract('FraxRegistrarController', function () {
     var balance = await fxs.balanceOf(ownerAccount)
     fxs.transfer(registrantAccount, balance.toString())
     await expect(registerName('newname')).to.be.revertedWith(
-      'InsufficientBalance()',
+      'ERC20: transfer amount exceeds balance',
     )
   })
 
